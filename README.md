@@ -11,7 +11,7 @@
     <ol>
         <li>Upload a ZIP file containing CVs using the provided form.</li>
         <li>Submit the form to extract data from the CVs.</li>
-        <li>Save the Excel file containing the extracted information.</li>
+        <li>Save the Excel file in Contacts folder containing the extracted information.</li>
     </ol>
     <h2>library Requirements:</h2>
     <ul>
