@@ -1,5 +1,4 @@
 
-#new
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from tempfile import TemporaryDirectory
 from zipfile import ZipFile
@@ -9,6 +8,8 @@ import re
 import docx2txt
 from PyPDF2 import PdfReader
 import time
+from fastapi.responses import FileResponse
+
 
 app = FastAPI()
 
@@ -126,7 +127,7 @@ async def extract_contacts_from_zip(file: UploadFile = File(...)):
                 for email, phone, text in zip(contacts["emails"], contacts["phone_numbers"], contacts["texts"]):
                     ws.append([filename, email, phone, text])
 
-        timestamp = time.strftime("%H%M%S")
+        timestamp = time.strftime("%Y%m%d%H%M%S")
         folder_name = "contacts"
         folder_path = os.path.join(os.getcwd(), folder_name)
         if not os.path.exists(folder_path):
@@ -136,8 +137,8 @@ async def extract_contacts_from_zip(file: UploadFile = File(...)):
         excel_filename = f"contactsCV_{timestamp}.xlsx"
         excel_file_path = os.path.join(folder_path, excel_filename)
         wb.save(excel_file_path)
+        return FileResponse(excel_file_path, headers={'Content-Disposition': f'attachment; filename={excel_filename}'})
 
-        return {"excel_file_path": excel_file_path}
 
 if __name__ == "__main__":
     import uvicorn
