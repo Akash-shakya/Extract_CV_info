@@ -125,10 +125,12 @@ async def extract_contacts_from_zip(file: UploadFile = File(...)):
                 for email, phone, text in zip(contacts["emails"], contacts["phone_numbers"], contacts["texts"]):
                     ws.append([filename, email, phone, text])
 
-        timestamp = time.strftime("%Y%m%d%H%M%S")
+        timestamp = time.strftime("%H%M%S")
         folder_name = "contacts"
         folder_path = os.path.join(os.getcwd(), folder_name)
-        os.mkdir(folder_path)
+        if not os.path.exists(folder_path):
+            # Create the folder only if it doesn't exist
+            os.mkdir(folder_path)
 
         excel_filename = f"contactsCV_{timestamp}.xlsx"
         excel_file_path = os.path.join(folder_path, excel_filename)
